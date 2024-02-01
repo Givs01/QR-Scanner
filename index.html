@@ -17,6 +17,7 @@
             width: 100%;
             max-width: 600px;
             height: auto;
+            transform: scaleX(-1); /* Flip the video horizontally */
         }
     </style>
 </head>
@@ -36,8 +37,10 @@
                 // Handle the scanned QR code content (in this case, displaying an alert)
                 alert('QR Code Content: ' + content);
 
-                // Call the recordCheckInOut function
-                recordCheckInOut(content);
+                // Call the recordCheckInOut function with a delay of 1 second
+                setTimeout(() => {
+                    recordCheckInOut(content);
+                }, 2000);
             });
 
             // Start scanning with the specified camera
@@ -58,6 +61,9 @@
                 .catch(error => {
                     console.error('Error adding data:', error);
                 });
+
+            // Resume scanning after the delay
+            scanner.resume();
         }
 
         // Get the list of available cameras
