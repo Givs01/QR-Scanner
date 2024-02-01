@@ -17,7 +17,6 @@
             width: 100%;
             max-width: 600px;
             height: auto;
-            transform: scaleX(1); /* Flip the video horizontally */
         }
     </style>
 </head>
@@ -37,11 +36,8 @@
                 // Handle the scanned QR code content (in this case, displaying an alert)
                 alert('QR Code Content: ' + content);
 
-                // Pause scanning for 3 seconds before calling recordCheckInOut
-                setTimeout(() => {
-                    scanner.pause();
-                    recordCheckInOut(content);
-                }, 3000);
+                // Call the recordCheckInOut function
+                recordCheckInOut(content);
             });
 
             // Start scanning with the specified camera
@@ -57,14 +53,10 @@
                 .then(result => {
                     console.log('Data added successfully:', result);
 
-                    // Resume scanning after sending data
-                    scanner.resume();
+                    // If needed, you can update the UI or perform other actions here
                 })
                 .catch(error => {
                     console.error('Error adding data:', error);
-
-                    // Resume scanning after an error
-                    scanner.resume();
                 });
         }
 
