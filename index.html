@@ -25,13 +25,17 @@
 
     <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
     <script>
+       
+        
         const video = document.getElementById('video');
         const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxRANWgQcdTjTwHQBrZy9vfAoIMIjhXEYijk6M-WklHkQjLp0-UVWuiBK_6rWEtdUR1/exec';
+
+        
         let scanner;
 
         function startScanner(camera) {
             // Initialize the camera
-            scanner = new Instascan.Scanner({ video: video });
+            scanner = new Instascan.Scanner({ video: video, facingMode: camera.facingMode });
 
             scanner.addListener('scan', function (content) {
                 // Stop the camera
@@ -46,7 +50,7 @@
                 // Wait for 2 seconds before starting the scanner again
                 setTimeout(function () {
                     startScanner(camera);
-                }, 1000);
+                }, 2000);
             });
 
             // Start scanning with the specified camera
@@ -74,7 +78,7 @@
             if (cameras.length > 0) {
                 // Determine the camera to use based on screen width
                 const useBackCamera = window.innerWidth < 600;
-                const selectedCamera = useBackCamera ? cameras[1] : cameras[0];
+                const selectedCamera = useBackCamera ? cameras.find(cam => cam.facingMode === 'environment') : cameras[0];
 
                 // Start scanning with the selected camera
                 startScanner(selectedCamera);
