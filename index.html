@@ -37,10 +37,11 @@
                 // Handle the scanned QR code content (in this case, displaying an alert)
                 alert('QR Code Content: ' + content);
 
-                // Call the recordCheckInOut function with a delay of 1 second
+                // Pause scanning for 3 seconds before calling recordCheckInOut
                 setTimeout(() => {
+                    scanner.pause();
                     recordCheckInOut(content);
-                }, 2000);
+                }, 3000);
             });
 
             // Start scanning with the specified camera
@@ -56,14 +57,15 @@
                 .then(result => {
                     console.log('Data added successfully:', result);
 
-                    // If needed, you can update the UI or perform other actions here
+                    // Resume scanning after sending data
+                    scanner.resume();
                 })
                 .catch(error => {
                     console.error('Error adding data:', error);
-                });
 
-            // Resume scanning after the delay
-            scanner.resume();
+                    // Resume scanning after an error
+                    scanner.resume();
+                });
         }
 
         // Get the list of available cameras
