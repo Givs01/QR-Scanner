@@ -26,6 +26,7 @@
     <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
     <script>
         const video = document.getElementById('video');
+        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxRANWgQcdTjTwHQBrZy9vfAoIMIjhXEYijk6M-WklHkQjLp0-UVWuiBK_6rWEtdUR1/exec';
         let scanner;
 
         function startScanner(camera) {
@@ -33,11 +34,19 @@
             scanner = new Instascan.Scanner({ video: video });
 
             scanner.addListener('scan', function (content) {
+                // Stop the camera
+                scanner.stop();
+
                 // Handle the scanned QR code content (in this case, displaying an alert)
                 alert('QR Code Content: ' + content);
 
                 // Call the recordCheckInOut function
                 recordCheckInOut(content);
+
+                // Wait for 2 seconds before starting the scanner again
+                setTimeout(function () {
+                    startScanner(camera);
+                }, 1000);
             });
 
             // Start scanning with the specified camera
@@ -65,12 +74,7 @@
             if (cameras.length > 0) {
                 // Determine the camera to use based on screen width
                 const useBackCamera = window.innerWidth < 600;
-                const selectedCamera = useBackCamera ? cameras.find(camera => camera.name.includes('back')) : cameras[0];
-
-                // Add constraints to address mirroring issue
-                selectedCamera.constraints = {
-                    facingMode: { exact: 'environment' }
-                };
+                const selectedCamera = useBackCamera ? cameras[1] : cameras[0];
 
                 // Start scanning with the selected camera
                 startScanner(selectedCamera);
