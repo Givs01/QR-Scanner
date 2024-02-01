@@ -17,7 +17,6 @@
             width: 100%;
             max-width: 600px;
             height: auto;
-            transform: scaleX(1); /* Flip the video horizontally */
         }
     </style>
 </head>
@@ -67,6 +66,11 @@
                 // Determine the camera to use based on screen width
                 const useBackCamera = window.innerWidth < 600;
                 const selectedCamera = useBackCamera ? cameras.find(camera => camera.name.includes('back')) : cameras[0];
+
+                // Add constraints to address mirroring issue
+                selectedCamera.constraints = {
+                    facingMode: { exact: 'environment' }
+                };
 
                 // Start scanning with the selected camera
                 startScanner(selectedCamera);
