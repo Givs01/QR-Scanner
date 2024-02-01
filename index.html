@@ -8,23 +8,28 @@
 </head>
 <body>
    
-    <header><h1>Global South Academic Conclave</h1>
-     <h3> WASH and Climate linkages</h3> </header>
+    <header>
+        <h1>Global South Academic Conclave</h1>
+        <h2>WASH and Climate linkages</h2>
+    </header>
     
-    <section>         <h3>Digital Registration </h3>     </section>
+    <section>
+        <h3>Digital Registration</h3>
+    </section>
 
     <div id="videoContainer">
-    <video id="video" playsinline></video>
+        <video id="video" playsinline></video>
+        <i id="swapCameraBtn" class="fa-solid fa-camera-rotate"></i>
+        <button id="swapCameraBtn">Camera-rotate</button>
+        
     </div>
 
     <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
     
     <script>    
-        
         const video = document.getElementById('video');
+        const swapCameraBtn = document.getElementById('swapCameraBtn');
         const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxRANWgQcdTjTwHQBrZy9vfAoIMIjhXEYijk6M-WklHkQjLp0-UVWuiBK_6rWEtdUR1/exec';
-
-        
         let scanner;
 
         function startScanner(camera) {
@@ -67,7 +72,31 @@
                 });
         }
 
-        // Get the list of available cameras
+        function swapCamera() {
+            // Stop the current scanner
+            scanner.stop();
+
+            // Get the list of available cameras
+            Instascan.Camera.getCameras().then(cameras => {
+                if (cameras.length > 0) {
+                    // Determine the camera to use based on screen width
+                    const useBackCamera = window.innerWidth < 600;
+                    const selectedCamera = useBackCamera ? cameras[1] : cameras[0];
+
+                    // Start scanning with the selected camera
+                    startScanner(selectedCamera);
+                } else {
+                    console.error('No cameras found.');
+                }
+            }).catch(err => {
+                console.error(err);
+            });
+        }
+
+        // Add event listener to the swap camera button
+        swapCameraBtn.addEventListener('click', swapCamera);
+
+        // Get the list of available cameras and start scanning
         Instascan.Camera.getCameras().then(cameras => {
             if (cameras.length > 0) {
                 // Determine the camera to use based on screen width
@@ -84,15 +113,10 @@
         });
     </script>
 
+    <footer>
+        <p>Design by Givs01 | Copyrights &copy; - Center for Water and Sanitation, All rights reserved.</p>
+    </footer>
 
-
-
-
-
-
-<footer><p> Design by Givs01  |  Copyrights &copy; - Center for Water and Sanitation, All rights reserved. </p></footer>
-
-    
     <script src="script.js"></script>
     <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
 </body>
