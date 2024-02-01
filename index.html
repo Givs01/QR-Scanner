@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Scanner</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #video {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <video id="video" playsinline></video>
+
+    <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+    <script>
+        const video = document.getElementById('video');
+        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxRANWgQcdTjTwHQBrZy9vfAoIMIjhXEYijk6M-WklHkQjLp0-UVWuiBK_6rWEtdUR1/exec';
+        let scanner;
+
+        function startScanner(camera) {
+            // Initialize the camera
+            scanner = new Instascan.Scanner({ video: video });
+
+            scanner.addListener('scan', function (content) {
+
+                // Handle the scanned QR code content (in this case, displaying an alert)
+                alert('QR Code Content: ' + content);
+
+                // Call the recordCheckInOut function
+                recordCheckInOut(content);
+            });
+
+            // Start scanning with the specified camera
+            scanner.start(camera);
+        }
+
+        function recordCheckInOut(guestName) {
+            var checkType = "Registered";
+
+            // Send data to the Google Apps Script web app
+            fetch(`${WEB_APP_URL}?guestName=${guestName}&checkType=${checkType}`)
+                .then(response => response.text())
+                .then(result => {
+                    console.log('Data added successfully:', result);
+
+                    // If needed, you can update the UI or perform other actions here
+                })
+                .catch(error => {
+                    console.error('Error adding data:', error);
+                });
+        }
+
+        // Get the list of available cameras
+        Instascan.Camera.getCameras().then(cameras => {
+            if (cameras.length > 0) {
+                // Determine the camera to use based on screen width
+                const useBackCamera = window.innerWidth < 600;
+                const selectedCamera = useBackCamera ? cameras[1] : cameras[0];
+
+                // Start scanning with the selected camera
+                startScanner(selectedCamera);
+            } else {
+                console.error('No cameras found.');
+            }
+        }).catch(err => {
+            console.error(err);
+        });
+    </script>
+</body>
+</html>
