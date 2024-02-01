@@ -49,7 +49,6 @@ h1 {
         
         text-align: center;
         font-size: 15px;
-        background-color:grey;
         color: #FFFFFF;
         padding:10px;
         font-weight: normal;
@@ -89,7 +88,7 @@ h1 {
         justify-content: center;
         align-items: center;
         width: 50%;
-        `  margin: auto;
+        margin: auto;
     }
 
     label {
@@ -197,7 +196,6 @@ background-color: #ff3e48;
     
             text-align: center;
             font-size: 10px;
-            background-color:grey;
             color: #FFFFFF;
             padding:10px;
             font-weight: normal;
