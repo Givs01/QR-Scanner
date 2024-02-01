@@ -17,6 +17,7 @@
             width: 100%;
             max-width: 600px;
             height: auto;
+            transform: scaleX(-1); /* Flip the video horizontally */
         }
     </style>
 </head>
@@ -26,7 +27,6 @@
     <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
     <script>
         const video = document.getElementById('video');
-        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxRANWgQcdTjTwHQBrZy9vfAoIMIjhXEYijk6M-WklHkQjLp0-UVWuiBK_6rWEtdUR1/exec';
         let scanner;
 
         function startScanner(camera) {
@@ -34,7 +34,6 @@
             scanner = new Instascan.Scanner({ video: video });
 
             scanner.addListener('scan', function (content) {
-
                 // Handle the scanned QR code content (in this case, displaying an alert)
                 alert('QR Code Content: ' + content);
 
